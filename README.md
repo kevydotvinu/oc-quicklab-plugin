@@ -1,10 +1,10 @@
-# oc-quicklab-plugin
+## oc-quicklab-plugin
 The oc-quicklab-plugin is a CLI plugin that works with oc/kubectl and gives the quicklab shared cluster information in the CLI.
 
-## Prerequisites
+### Prerequisites
 - `oc` binary
 
-## Installation
+### Installation
 ```bash
 git clone https://github.com/kevydotvinu/oc-quicklab-plugin.git
 cd oc-quicklab-plugin
@@ -13,7 +13,7 @@ mv oc-quicklab /usr/local/bin/oc-quicklab
 oc quicklab
 ```
 
-## Usage
+### Usage
 - List quicklab shared clusters
 ```bash
 oc quicklab list
