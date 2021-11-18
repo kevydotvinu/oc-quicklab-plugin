@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"fmt"
+	"text/tabwriter"
 
 	"github.com/spf13/cobra"
 
@@ -24,7 +25,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"text/tabwriter"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/chromedp/cdproto/cdp"
@@ -38,7 +38,7 @@ var listCmd = &cobra.Command{
 	Short: "List the quicklab shared clusters",
 	Long:  `This command gives the list of available clusters in the quicklab shared environment`,
 	Run: func(cmd *cobra.Command, args []string) {
-		getClustersList()
+		printClusterList()
 	},
 }
 
@@ -46,7 +46,7 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 }
 
-func getClustersList() {
+func getClustersList() (rows, links [][]string, headings []string) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", false),
 		chromedp.WindowSize(300, 300),
@@ -77,10 +77,7 @@ func getClustersList() {
 		log.Fatal(err)
 	}
 
-	var headings, row []string
-	var rows [][]string
-	var rowLength int
-	var rowsLength int
+	var row []string
 
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(body))
 	if err != nil {
@@ -95,32 +92,35 @@ func getClustersList() {
 			})
 			rowhtml.Find("td").Each(func(indexth int, tablecell *goquery.Selection) {
 				row = append(row, tablecell.Text())
-				rowLength = len(row)
 			})
 			rows = append(rows, row)
 			row = nil
 		})
 	})
 
-	rowsLength = len(rows)
-	link := []string{}
-	links := [][]string{{"null"}}
+	var link []string
+	null := []string{"null"}
+	links = append(links, null)
 	doc.Find("a").Each(func(in int, hreflink *goquery.Selection) {
 		href, _ := hreflink.Attr("href")
 		link = append(link, href)
 		links = append(links, link)
 		link = nil
 	})
+	return
+}
 
-	headings = append(headings, "Links")
-
+func printClusterList() {
+	name, _, headings := getClustersList()
+	singleName := name[1]
+	rowLength := len(name)
+	columnLength := len(singleName)
 	w := new(tabwriter.Writer)
 	w.Init(os.Stdout, 8, 8, 0, '\t', 0)
-	// defer w.Flush()
 	fmt.Fprintf(w, "%s\t%s\t%s\t%s\t\n", headings[0], headings[1], headings[2], headings[3])
-	for i := 1; i < rowsLength; i++ {
-		for j := 0; j < rowLength; j++ {
-			fmt.Fprintf(w, "%s\t", rows[i][j])
+	for i := 1; i < rowLength; i++ {
+		for j := 0; j < columnLength; j++ {
+			fmt.Fprintf(w, "%s\t", name[i][j])
 		}
 		fmt.Fprintf(w, "\n")
 	}

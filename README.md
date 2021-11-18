@@ -9,7 +9,7 @@ The oc-quicklab-plugin is a CLI plugin that works with oc/kubectl and gives the 
 git clone https://github.com/kevydotvinu/oc-quicklab-plugin.git
 cd oc-quicklab-plugin
 go build -o oc-quicklab main.go
-mv oc-quicklab /usr/local/bin/oc-quicklab
+install oc-quicklab /usr/local/bin
 oc quicklab
 ```
 
@@ -17,4 +17,8 @@ oc quicklab
 - List quicklab shared clusters
 ```bash
 oc quicklab list
+```
+- Login into quicklab shared cluster
+```bash
+oc quicklab login <cluster-name-from-above>
 ```
