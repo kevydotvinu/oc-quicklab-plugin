@@ -3,6 +3,7 @@ The oc-quicklab-plugin is a CLI plugin that works with oc/kubectl and gives the 
 
 ### Prerequisites
 - `oc` binary
+- [Chromium](https://www.chromium.org/) or [Google Chrome Web Browser](https://www.google.com/chrome/)
 
 ### Installation
 ```bash
