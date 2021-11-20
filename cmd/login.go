@@ -16,9 +16,18 @@ limitations under the License.
 package cmd
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"os"
+	"os/exec"
+	"regexp"
+	"strings"
 
+	"github.com/PuerkitoBio/goquery"
+	"github.com/chromedp/cdproto/cdp"
+	"github.com/chromedp/cdproto/dom"
+	"github.com/chromedp/chromedp"
 	"github.com/spf13/cobra"
 )
 
@@ -28,9 +37,7 @@ var loginCmd = &cobra.Command{
 	Short: "Authenticate the quicklab shared cluster using oc binary.",
 	Long:  `This command fetches the credentials from the portal and authenticates the quicklab shared cluster using oc binary. The username will be kubeadmin.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		checkArg()
-		a := clusterNameAndLinks()
-		fmt.Println(a)
+		loginCluster()
 	},
 }
 
@@ -50,12 +57,11 @@ func init() {
 	loginCmd.MarkFlagRequired("cluster")
 }
 
-func checkArg() {
-	fmt.Println(os.Args[3])
-}
-
 func clusterNameAndLinks() map[string]string {
-	name, links, _ := getClustersList()
+	url := `https://quicklab-quicklab.apps.ocp-c1.prod.psi.redhat.com/login`
+	path := `sharedclusters`
+	tag := `document.querySelector("#main-container > div > main > div > section > article > div.pf-c-card__body")`
+	name, links, _ := getClustersList(url, path, tag)
 	rowLength := len(name)
 	nameLinkMap := make(map[string]string)
 	for i := 1; i < rowLength; i++ {
@@ -64,4 +70,80 @@ func clusterNameAndLinks() map[string]string {
 		nameLinkMap[j] = k
 	}
 	return nameLinkMap
+}
+
+func getPath() string {
+	clusterNameAndLink := clusterNameAndLinks()
+	path := clusterNameAndLink[os.Args[3]]
+	return path
+}
+
+func getHtmlBody(url, path, tag string) (body string) {
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("headless", false),
+		chromedp.WindowSize(300, 300),
+		chromedp.Flag("disable-gpu", false),
+		chromedp.Flag("enable-automation", false),
+		chromedp.Flag("disable-extensions", false),
+		chromedp.UserDataDir(os.Getenv("HOME")+"/.config/chromium"),
+	)
+
+	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer cancel()
+
+	// create context
+	ctx, cancel := chromedp.NewContext(allocCtx, chromedp.WithLogf(log.Printf))
+	defer cancel()
+	var ids []cdp.NodeID
+
+	if err := chromedp.Run(ctx,
+		chromedp.Navigate(url),
+		chromedp.Click(`sharedclusters`, chromedp.NodeVisible),
+		chromedp.Click(path, chromedp.NodeVisible),
+		chromedp.NodeIDs(tag, &ids, chromedp.ByJSPath),
+		chromedp.ActionFunc(func(ctx context.Context) error {
+			var erro error
+			body, erro = dom.GetOuterHTML().WithNodeID(ids[0]).Do(ctx)
+			return erro
+		}),
+	); err != nil {
+		log.Fatal(err)
+	}
+	return body
+}
+
+func parseHtmlBody(body string) (username string, password string, server string) {
+
+	var s string
+	username = "kubeadmin"
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(body))
+	if err != nil {
+		fmt.Println("HTML body not found")
+		log.Fatal(err)
+	}
+
+	doc.Find("body").Each(func(indexdiv int, bodyhtml *goquery.Selection) {
+		s = bodyhtml.Text()
+	})
+	r1, _ := regexp.Compile("([A-Za-z0-9]{5})+-+([A-Za-z0-9]{5})+-+([A-Za-z0-9]{5})+-+([A-Za-z0-9]{5})")
+	r2, _ := regexp.Compile(`(apps)\.([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])\.(com)`)
+	password = r1.FindString(s)
+	server = r2.FindString(s)
+	server = strings.Replace(server, "apps", "api", -1)
+	server = `https://` + server + `:6443`
+	return username, password, server
+}
+
+func loginCluster() {
+	url := `https://quicklab-quicklab.apps.ocp-c1.prod.psi.redhat.com/login`
+	path := getPath()
+	tag := `document.querySelector("#main-container > div > main > div > section:nth-child(2) > div > div:nth-child(4) > article > div.pf-c-card__body")`
+	body := getHtmlBody(url, path, tag)
+	username, password, server := parseHtmlBody(body)
+	cmd := exec.Command("oc", "login", "--insecure-skip-tls-verify=true", "-u", username, "-p", password, server)
+	stdout, err := cmd.Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(stdout))
 }

@@ -46,7 +46,7 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 }
 
-func getClustersList() (rows, links [][]string, headings []string) {
+func getClustersList(url, path, tag string) (rows, links [][]string, headings []string) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", false),
 		chromedp.WindowSize(300, 300),
@@ -64,10 +64,11 @@ func getClustersList() (rows, links [][]string, headings []string) {
 	defer cancel()
 	var ids []cdp.NodeID
 	var body string
+
 	if err := chromedp.Run(ctx,
-		chromedp.Navigate(`https://quicklab-quicklab.apps.ocp-c1.prod.psi.redhat.com/login`),
-		chromedp.Click(`sharedclusters`, chromedp.NodeVisible),
-		chromedp.NodeIDs(`document.querySelector("#main-container > div > main > div > section > article > div.pf-c-card__body")`, &ids, chromedp.ByJSPath),
+		chromedp.Navigate(url),
+		chromedp.Click(path, chromedp.NodeVisible),
+		chromedp.NodeIDs(tag, &ids, chromedp.ByJSPath),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			var erro error
 			body, erro = dom.GetOuterHTML().WithNodeID(ids[0]).Do(ctx)
@@ -111,7 +112,10 @@ func getClustersList() (rows, links [][]string, headings []string) {
 }
 
 func printClusterList() {
-	name, _, headings := getClustersList()
+	url := `https://quicklab-quicklab.apps.ocp-c1.prod.psi.redhat.com/login`
+	path := `sharedclusters`
+	tag := `document.querySelector("#main-container > div > main > div > section > article > div.pf-c-card__body")`
+	name, _, headings := getClustersList(url, path, tag)
 	singleName := name[1]
 	rowLength := len(name)
 	columnLength := len(singleName)
