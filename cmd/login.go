@@ -140,14 +140,12 @@ func loginCluster() {
 	tag := `document.querySelector("#main-container > div > main > div > section:nth-child(2) > div > div:nth-child(4) > article > div.pf-c-card__body")`
 	body := getHtmlBody(url, path, tag)
 	username, password, server := parseHtmlBody(body)
-	fmt.Println(username, password, server)
 	if password == "" && server != "" {
 		username = "foo"
 		password = "bar"
 		server = strings.Replace(server, ":6443", "", -1)
 		server = strings.Replace(server, "api", "openshift", -1)
 	}
-	fmt.Println(username, password, server)
 	cmd := exec.Command("oc", "login", "--insecure-skip-tls-verify=true", "-u", username, "-p", password, server)
 	stdout, err := cmd.Output()
 	if err != nil {

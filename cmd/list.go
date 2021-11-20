@@ -121,7 +121,7 @@ func printClusterList() {
 	columnLength := len(singleName)
 	w := new(tabwriter.Writer)
 	w.Init(os.Stdout, 8, 8, 0, '\t', 0)
-	fmt.Fprintf(w, "%s\t%s\t%s\t%s\t\n", headings[0], headings[1], headings[2], headings[3])
+	fmt.Fprintf(w, "%s\t%s\t%s\t%s\t\n", strings.ToUpper(headings[0]), strings.ToUpper(headings[1]), strings.ToUpper(headings[2]), strings.ToUpper(headings[3]))
 	for i := 1; i < rowLength; i++ {
 		for j := 0; j < columnLength; j++ {
 			fmt.Fprintf(w, "%s\t", name[i][j])
