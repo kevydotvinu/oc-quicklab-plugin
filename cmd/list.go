@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"fmt"
+	"net"
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
@@ -46,7 +47,16 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 }
 
+func checkDNS() {
+	_, err := net.LookupIP("quicklab.upshift.redhat.com")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Please connect VPN!\n")
+		os.Exit(1)
+	}
+}
+
 func getClustersList(url, path, tag string) (rows, links [][]string, headings []string) {
+	checkDNS()
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", false),
 		chromedp.WindowSize(300, 300),
