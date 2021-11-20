@@ -23,6 +23,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+	"text/tabwriter"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/chromedp/cdproto/cdp"
@@ -131,12 +132,22 @@ func loginCluster() {
 	tag := `document.querySelector("#main-container > div > main > div > section:nth-child(2) > div > div:nth-child(4) > article > div.pf-c-card__body")`
 	body := getHtmlBody(url, path, tag)
 	username, password, server := parseHtmlBody(body)
+	console := strings.Replace(server, "api", "console-openshift-console.apps", -1)
+	console = strings.Replace(console, ":6443", "", -1)
 	if password == "" && server != "" {
-		username = "foo"
-		password = "bar"
+		username = "administrator"
+		password = "Password@123"
 		server = strings.Replace(server, ":6443", "", -1)
 		server = strings.Replace(server, "api", "openshift", -1)
+		console = strings.Replace(server, "api", "openshift", -1)
 	}
+
+	w := new(tabwriter.Writer)
+	w.Init(os.Stdout, 8, 8, 0, '\t', 0)
+	fmt.Fprintf(w, "%s\t%s\t%s\t\n", strings.ToUpper("username"), strings.ToUpper("password"), strings.ToUpper("console"))
+	fmt.Fprintf(w, "%s\t%s\t%s\t\n\n", strings.ToLower(username), password, strings.ToLower(console))
+	w.Flush()
+
 	cmd := exec.Command("oc", "login", "--insecure-skip-tls-verify=true", "-u", username, "-p", password, server)
 	stdout, err := cmd.Output()
 	if err != nil {
