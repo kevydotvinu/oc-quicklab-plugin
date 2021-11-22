@@ -43,11 +43,11 @@ oc quicklab
 ```bash
 oc quicklab help
 ```
-##### List quicklab shared clusters
+##### List Quicklab shared clusters
 ```bash
 oc quicklab list
 ```
-##### Login into quicklab shared cluster
+##### Login into Quicklab shared cluster
 ```bash
 oc quicklab login --cluster <cluster-name>
 ```
