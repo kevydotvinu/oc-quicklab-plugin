@@ -4,7 +4,7 @@
 [![downloads](https://img.shields.io/github/downloads/kevydotvinu/oc-quicklab-plugin/total)](https://github.com/kevydotvinu/oc-quicklab-plugin/releases)
 [![commit](https://img.shields.io/github/last-commit/kevydotvinu/oc-quicklab-plugin)](https://github.com/kevydotvinu/oc-quicklab-plugin/commits/master)
 
-### OpenShift CLI Plug-in - Quicklab
+### OpenShift CLI plug-in for Quicklab
 The oc-quicklab-plugin is a CLI plug-in that works with oc/kubectl and gives the quicklab shared cluster information in the CLI.
 
 ### Demo
