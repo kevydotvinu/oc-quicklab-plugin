@@ -47,6 +47,7 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 }
 
+// Check if Red Hat VPN is connected
 func checkDNS() {
 	_, err := net.LookupIP("quicklab.upshift.redhat.com")
 	if err != nil {
@@ -55,6 +56,7 @@ func checkDNS() {
 	}
 }
 
+// Collects clusters list
 func getClustersList(url, path, tag string) (rows, links [][]string, headings []string) {
 	checkDNS()
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
@@ -121,6 +123,7 @@ func getClustersList(url, path, tag string) (rows, links [][]string, headings []
 	return
 }
 
+// Prints clusters list in table format
 func printClusterList() {
 	url := `https://quicklab-quicklab.apps.ocp-c1.prod.psi.redhat.com/login`
 	path := `sharedclusters`

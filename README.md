@@ -1,6 +1,9 @@
 ## oc-quicklab-plugin
 The oc-quicklab-plugin is a CLI plugin that works with oc/kubectl and gives the quicklab shared cluster information in the CLI.
 
+## Demo
+[![asciicast](https://asciinema.org/a/hZ5EQRwJG2oLB9WOlRDIr195V.svg)](https://asciinema.org/a/hZ5EQRwJG2oLB9WOlRDIr195V)
+
 ### Prerequisites
 - [OpenShift CLI](https://access.redhat.com/downloads/content/290)
 - [Chromium](https://www.chromium.org/) or [Google Chrome Web Browser](https://www.google.com/chrome/)

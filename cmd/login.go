@@ -48,6 +48,7 @@ func init() {
 	loginCmd.MarkFlagRequired("cluster")
 }
 
+// Maps cluster name and its link
 func clusterNameAndLinks() map[string]string {
 	url := `https://quicklab-quicklab.apps.ocp-c1.prod.psi.redhat.com/login`
 	path := `sharedclusters`
@@ -75,6 +76,7 @@ func getPath() string {
 	return ""
 }
 
+// Collects HTML body
 func getHtmlBody(url, path, tag string) (body string) {
 	checkDNS()
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
@@ -110,6 +112,7 @@ func getHtmlBody(url, path, tag string) (body string) {
 	return body
 }
 
+// Parse username, password and URL from HTML body
 func parseHtmlBody(body string) (username string, password string, server string) {
 
 	var s string
@@ -132,6 +135,7 @@ func parseHtmlBody(body string) (username string, password string, server string
 	return username, password, server
 }
 
+// Logging into the cluster
 func loginCluster() {
 	url := `https://quicklab-quicklab.apps.ocp-c1.prod.psi.redhat.com/login`
 	path := getPath()
