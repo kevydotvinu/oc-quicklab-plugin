@@ -10,6 +10,7 @@ Either use prebuilt binary:
 ```bash
 $ wget -O oc-quicklab https://github.com/kevydotvinu/oc-quicklab-plugin/releases/download/v1/oc-quicklab-plugin_v1_linux_amd64
 $ sudo mv oc-quicklab /usr/local/bin/
+$ sudo chmod +x /usr/bin/local/oc-quicklab
 $ oc quicklab help
 ```
 Or build it from source:
