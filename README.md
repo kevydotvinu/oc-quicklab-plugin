@@ -4,6 +4,13 @@ The oc-quicklab-plugin is a CLI plugin that works with oc/kubectl and gives the 
 ### Prerequisites
 - [OpenShift CLI](https://access.redhat.com/downloads/content/290)
 - [Chromium](https://www.chromium.org/) or [Google Chrome Web Browser](https://www.google.com/chrome/)
+- Configure `Integrated Authentication` and `Kerberos Credentials Delegation` in Chrome browser - Add the below in `/etc/opt/chrome/policies/managed/redhat-corp.json` file.
+```bash
+{
+    "AuthServerWhitelist": "*.redhat.com",
+    "AuthNegotiateDelegateWhitelist": "*.redhat.com"
+}
+```
 
 ### Installation
 Either use prebuilt binary:
