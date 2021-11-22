@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net"
 	"text/tabwriter"
 
@@ -59,13 +60,18 @@ func checkDNS() {
 // Collects clusters list
 func getClustersList(url, path, tag string) (rows, links [][]string, headings []string) {
 	checkDNS()
+	dir, err := ioutil.TempDir("/tmp/", "quicklab")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer os.RemoveAll(dir)
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", false),
 		chromedp.WindowSize(300, 300),
 		chromedp.Flag("disable-gpu", false),
 		chromedp.Flag("enable-automation", false),
 		chromedp.Flag("disable-extensions", false),
-		chromedp.UserDataDir(os.Getenv("HOME")+"/.config/chromium"),
+		chromedp.UserDataDir(dir),
 	)
 
 	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
