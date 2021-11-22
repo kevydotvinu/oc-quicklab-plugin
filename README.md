@@ -43,5 +43,5 @@ oc quicklab list
 ```
 - Login into quicklab shared cluster
 ```bash
-oc quicklab login --cluster <cluster-name-from-above>
+oc quicklab login --cluster <cluster-name>
 ```
