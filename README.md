@@ -6,20 +6,31 @@ The oc-quicklab-plugin is a CLI plugin that works with oc/kubectl and gives the 
 - [Chromium](https://www.chromium.org/) or [Google Chrome Web Browser](https://www.google.com/chrome/)
 
 ### Installation
+Either use prebuilt binary:
+```bash
+$ wget -O oc-quicklab https://github.com/kevydotvinu/oc-quicklab-plugin/releases/download/v1/oc-quicklab-plugin_v1_linux_amd64
+$ sudo mv oc-quicklab /usr/local/bin/
+$ oc quicklab help
+```
+Or build it from source:
 ```bash
 git clone https://github.com/kevydotvinu/oc-quicklab-plugin.git
 cd oc-quicklab-plugin
 go build -o oc-quicklab main.go
-install oc-quicklab /usr/local/bin
+sudo mv oc-quicklab /usr/local/bin
 oc quicklab
 ```
 
 ### Usage
+- Help
+```bash
+oc quicklab help
+```
 - List quicklab shared clusters
 ```bash
 oc quicklab list
 ```
 - Login into quicklab shared cluster
 ```bash
-oc quicklab login <cluster-name-from-above>
+oc quicklab login --cluster <cluster-name-from-above>
 ```

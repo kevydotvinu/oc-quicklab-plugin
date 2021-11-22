@@ -65,8 +65,14 @@ func clusterNameAndLinks() map[string]string {
 
 func getPath() string {
 	clusterNameAndLink := clusterNameAndLinks()
-	path := clusterNameAndLink[os.Args[3]]
-	return path
+	if val, ok := clusterNameAndLink[os.Args[3]]; ok {
+		path := val
+		return path
+	} else {
+		fmt.Println("The cluster named", os.Args[3], "does not exist in the list")
+		os.Exit(1)
+	}
+	return ""
 }
 
 func getHtmlBody(url, path, tag string) (body string) {
