@@ -32,23 +32,23 @@ $ oc quicklab help
 ```
 Or build it from source:
 ```bash
-git clone https://github.com/kevydotvinu/oc-quicklab-plugin.git
-cd oc-quicklab-plugin
-go build -o oc-quicklab main.go
-sudo mv oc-quicklab /usr/local/bin
-oc quicklab
+$ git clone https://github.com/kevydotvinu/oc-quicklab-plugin.git
+$ cd oc-quicklab-plugin
+$ go build -o oc-quicklab main.go
+$ sudo mv oc-quicklab /usr/local/bin
+$ oc quicklab
 ```
 
 ### Usage
 ##### Help
 ```bash
-oc quicklab help
+$ oc quicklab help
 ```
 ##### List Quicklab shared clusters
 ```bash
-oc quicklab list
+$ oc quicklab list
 ```
 ##### Login into Quicklab shared cluster
 ```bash
-oc quicklab login --cluster <cluster-name>
+$ oc quicklab login --cluster <cluster-name>
 ```
