@@ -23,7 +23,7 @@ The oc-quicklab-plugin is a CLI plug-in that works with oc/kubectl and gives the
 ```
 
 ### Installation
-Either use prebuilt binary:
+Either use [prebuilt binary](https://github.com/kevydotvinu/oc-quicklab-plugin/releases):
 ```bash
 $ wget -O oc-quicklab https://github.com/kevydotvinu/oc-quicklab-plugin/releases/download/v1.0.0-alpha/oc-quicklab-plugin_v1.0.0-alpha_linux_amd64
 $ sudo mv oc-quicklab /usr/local/bin/
