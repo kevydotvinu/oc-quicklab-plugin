@@ -3,7 +3,7 @@
 [![goversion](https://img.shields.io/github/go-mod/go-version/kevydotvinu/oc-quicklab-plugin)](https://github.com/kevydotvinu/oc-quicklab-plugin/blob/master/go.mod)
 [![downloads](https://img.shields.io/github/downloads/kevydotvinu/oc-quicklab-plugin/total)](https://github.com/kevydotvinu/oc-quicklab-plugin/releases)
 [![release](https://github.com/kevydotvinu/oc-quicklab-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/kevydotvinu/oc-quicklab-plugin/actions/workflows/release.yml)
-[![openshiftplugin](https://img.shields.io/badge/OpenShift%20CLI-Plug--in-orange)](https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/extending-cli-plugins.html)
+[![openshiftplugin](https://img.shields.io/badge/openshift%20cli-plug--in-orange)](https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/extending-cli-plugins.html)
 
 ### OpenShift CLI plug-in for Quicklab
 The oc-quicklab-plugin is a CLI plug-in that works with oc/kubectl and gives the quicklab shared cluster information in the CLI.
