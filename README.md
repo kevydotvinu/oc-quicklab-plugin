@@ -25,11 +25,7 @@ The oc-quicklab-plugin is a CLI plug-in that works with oc/kubectl and gives the
 ### Installation
 Either use [prebuilt binary](https://github.com/kevydotvinu/oc-quicklab-plugin/releases):
 ```bash
-DOWNLOAD_URL=$(curl -s https://api.github.com/repos/kevydotvinu/oc-quicklab-plugin/releases/latest \
-             | jq -r '.assets \
-             | .[] \
-             | select(.name | contains("linux")) \
-             | .browser_download_url')
+DOWNLOAD_URL=$(curl -s https://api.github.com/repos/kevydotvinu/oc-quicklab-plugin/releases/latest | jq -r '.assets | .[] | select(.name | contains("linux")) | .browser_download_url')
 $ curl -s -o oc-quicklab ${DOWNLOAD_URL}
 $ sudo mv oc-quicklab /usr/local/bin/
 $ sudo chmod +x /usr/local/bin/oc-quicklab
