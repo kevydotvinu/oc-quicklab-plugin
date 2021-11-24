@@ -60,7 +60,7 @@ func checkDNS() {
 // Collects clusters list
 func getClustersList(url, path, tag string) (rows, links [][]string, headings []string) {
 	checkDNS()
-	dir, err := ioutil.TempDir("/tmp/", "quicklab")
+	dir, err := ioutil.TempDir("", "quicklab")
 	if err != nil {
 		log.Fatal(err)
 	}

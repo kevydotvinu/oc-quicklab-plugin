@@ -80,7 +80,7 @@ func getPath() string {
 // Collects HTML body
 func getHtmlBody(url, path, tag string) (body string) {
 	checkDNS()
-	dir, err := ioutil.TempDir("/tmp/", "quicklab")
+	dir, err := ioutil.TempDir("", "quicklab")
 	if err != nil {
 		log.Fatal(err)
 	}
