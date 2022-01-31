@@ -54,3 +54,13 @@ $ oc quicklab list
 ```bash
 $ oc quicklab login --cluster <cluster-name>
 ```
+
+### Troublshooting
+If browser winodw asks for the credentials, please check the Kerberos tickets held in a credentials cache and its validity.
+```bash
+klist
+```
+Login with credential if expires.
+```bash
+kinit <username>
+```
